@@ -145,7 +145,7 @@
 <p>ping 2001:288:6004:17::254:連到機械設計的通道</p>
 <p>ping -t 2001:288:6004:17::254:不斷地送封包給機械設計系(可以檢查網路線)</p>
 <p></p>
-<h2><strong>P.13~24</strong></h2>
+<h2><strong>個人分配P.13~24</strong></h2>
 <p><strong>p.13</strong></p>
 <p><strong>External Components of the Desktop System Unit</strong></p>
 <p>桌上主機系統的外部組件</p>
@@ -568,6 +568,167 @@
 <p>為了防止ESD，我們必須確保正確處理組件。切勿觸摸組件和配線所在的卡的表面；只能處理邊緣的卡。此外，在處理插卡之前，請始終使用正確的ESD腕帶或接地技術。您還應卸下珠寶首飾並避免穿寬鬆的衣服，因為它們可能會卡在<span>電腦</span>中或無意間將靜電轉移到組件中。另一個很棒的技術是使用防靜電墊或工作台。許多服務器機房和IT商店都安裝了這些墊子，它們是在工作時保持接地的一種好方法。您還可以提高房間的濕度，以最大程度減少靜電積聚的機會。大多數<span>電腦</span>服務器機房將濕度保持在40％到50％之間，以最大程度地減少靜電積聚，但是作為技術人員，您通常無法控制濕度。您還希望盡可能避免舖有地毯的區域，因為在地毯上行走會在體內更快地積聚靜電。最後，切勿在工作站上使用電動或磁性工具，因為鑽頭，衝擊扳手和真空吸塵器產生的電動機會產生靜電，這些靜電會排放到易碎的部件中。</p>
 <p></p>
 <h1>HomeWork 2</h1>
+<h1>作業一</h1>
+<p>一乙數列(python)</p>
+<div>
+<div class="syntaxhighlighter py" id="highlighter_924430">
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td class="gutter">
+<div class="line number1 index0 alt2">1</div>
+<div class="line number2 index1 alt1">2</div>
+<div class="line number3 index2 alt2">3</div>
+<div class="line number4 index3 alt1">4</div>
+<div class="line number5 index4 alt2">5</div>
+<div class="line number6 index5 alt1">6</div>
+<div class="line number7 index6 alt2">7</div>
+<div class="line number8 index7 alt1">8</div>
+<div class="line number9 index8 alt2">9</div>
+<div class="line number10 index9 alt1">10</div>
+<div class="line number11 index10 alt2">11</div>
+<div class="line number12 index11 alt1">12</div>
+</td>
+<td class="code">
+<div class="container">
+<div class="line number1 index0 alt2"><code class="py keyword">import</code> <code class="py plain">urllib.request</code></div>
+<div class="line number2 index1 alt1"><code class="py comments">#導入urllib.request</code></div>
+<div class="line number3 index2 alt2"><code class="py plain">target_url </code><code class="py keyword">=</code> <code class="py string">"https://nfulist.herokuapp.com/?semester=1091&amp;courseno=0776"</code></div>
+<div class="line number4 index3 alt1"><code class="py comments">#設target_url = "網址"</code></div>
+<div class="line number5 index4 alt2"><code class="py plain">cp1b </code><code class="py keyword">=</code> <code class="py plain">[]</code></div>
+<div class="line number6 index5 alt1"><code class="py comments">#設cp1b=數列</code></div>
+<div class="line number7 index6 alt2"><code class="py keyword">for</code> <code class="py plain">line </code><code class="py keyword">in</code> <code class="py plain">urllib.request.urlopen(target_url):</code></div>
+<div class="line number8 index7 alt1"><code class="py comments">#重複打開target_url的迴圈定義line</code></div>
+<div class="line number9 index8 alt2"><code class="py spaces">    </code><code class="py plain">cp1b.append(</code><code class="py functions">int</code><code class="py plain">(line.decode(</code><code class="py string">'utf-8'</code><code class="py plain">).rstrip()))</code></div>
+<div class="line number10 index9 alt1"><code class="py spaces">    </code><code class="py comments">#把line重新編碼加進cp1b(數列)   註:rstrip()刪除字尾符號</code></div>
+<div class="line number11 index10 alt2"><code class="py functions">print</code><code class="py plain">(cp1b)</code></div>
+<div class="line number12 index11 alt1"><code class="py comments">#印出cp1b</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p></p>
+<p>成果:</p>
+<p><img caption="false" height="88" src="https://40823152.github.io/cp2020/images/%E8%9E%A2%E5%B9%95%E6%93%B7%E5%8F%96%E7%95%AB%E9%9D%A2%202020-11-28%20205145.png" width="600"/></p>
+<p>解題步驟:</p>
+<p>1. 導入物件</p>
+<div>
+<div class="syntaxhighlighter py" id="highlighter_981881">
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td class="gutter">
+<div class="line number1 index0 alt2">1</div>
+</td>
+<td class="code">
+<div class="container">
+<div class="line number1 index0 alt2"><code class="py keyword">import</code> <code class="py plain">urllib.request</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>2.設url(要打開的網址)</p>
+<div>
+<div class="syntaxhighlighter py" id="highlighter_148202">
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td class="gutter">
+<div class="line number1 index0 alt2">1</div>
+</td>
+<td class="code">
+<div class="container">
+<div class="line number1 index0 alt2"><code class="py plain">target_url </code><code class="py keyword">=</code> <code class="py string">"https://nfulist.herokuapp.com/?semester=1091&amp;courseno=0776"</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>3.設數列</p>
+<div>
+<div class="syntaxhighlighter html" id="highlighter_89389">
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td class="gutter">
+<div class="line number1 index0 alt2">1</div>
+</td>
+<td class="code">
+<div class="container">
+<div class="line number1 index0 alt2"><code class="html plain">cp1b = []</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>4.設line為打開url的迴圈，並且使數列cp1b增加編碼後的line，最後刪除字尾符號</p>
+<div>
+<div class="syntaxhighlighter py" id="highlighter_782289">
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td class="gutter">
+<div class="line number1 index0 alt2">1</div>
+</td>
+<td class="code">
+<div class="container">
+<div class="line number1 index0 alt2"><code class="py keyword">for</code> <code class="py plain">line </code><code class="py keyword">in</code> <code class="py plain">urllib.request.urlopen(target_url):</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div>
+<div class="syntaxhighlighter py" id="highlighter_979400">
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td class="gutter">
+<div class="line number1 index0 alt2">1</div>
+</td>
+<td class="code">
+<div class="container">
+<div class="line number1 index0 alt2"><code class="py plain">cp1b.append(</code><code class="py functions">int</code><code class="py plain">(line.decode(</code><code class="py string">'utf-8'</code><code class="py plain">).rstrip()))</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>5.印出1b的數列</p>
+<div>
+<div class="syntaxhighlighter py" id="highlighter_816500">
+<table border="0" cellpadding="0" cellspacing="0">
+<tbody>
+<tr>
+<td class="gutter">
+<div class="line number1 index0 alt2">1</div>
+</td>
+<td class="code">
+<div class="container">
+<div class="line number1 index0 alt2"><code class="py functions">print</code><code class="py plain">(cp1b)</code></div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p></p>
+<p></p>
 <p>https://www.kaggle.com/mdecourse/cp2020-hw2</p>
 <h1>HomeWork 3</h1>
 <p></p>
