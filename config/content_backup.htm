@@ -1075,7 +1075,9 @@ output = open('http://mde.tw/cp2020/downloads/get_student_list/2020spring_cd_2a_
 <p><span><span></span></span></p>
 <p>Happy coding!</p>
 <p>編碼愉快!</p><h2>Solutions</h2>
-<h3>23.File Overlap Solutions</h3>
+<p>23.File Overlap</p>
+<p>24.Draw A Game Board</p>
+<p>25.Guessing Game Two</p><h3>23.File Overlap Solutions</h3>
 <p>Sample solution<br/>For a simple look at the solution (without using functions and using a for loop), look no further. Read on for a solution using functions and list comprehensions, along with a detailed explanation in Python 3.</p>
 <p>樣題解答<br/>為了簡單地看一下解決方案（不使用函數，也不使用for循環），別無所求。繼續閱讀以獲取使用函數和列表推導的解決方案以及Python 3中的詳細說明。</p>
 <p>The solution without functions using a for loop (read on for the one with functions and the explanation)</p>
@@ -1161,7 +1163,18 @@ happieslist = filetolistofints('happynumbers.txt')
 overlaplist = [elem for elem in primeslist if elem in happieslist]
 print(overlaplist)</pre>
 <pre><br/><br/></pre>
-<h3>24.Draw A Game Board Solutions</h3><h3>25.Guessing Game Two Solutions</h3>
+<h3>24.Draw A Game Board Solutions</h3>
+<p>Sample solution<br/>Let’s break this task into pieces and use Python 3.</p>
+<p></p>
+<p>First, the user needs to a numbers that represent the size of the game board (assuming the game board will be n by n). (Bonus exercise: extend the following code to make the game board not square.). The following snippet assumes that the person entered a number and doesn’t do any kind of error checking - for now, that’s OK.</p>
+<p>board_size = int(input("What size of game board? "))<br/>Then, we need to draw each row of the game board. Each row consists of horizontal pieces (---) and vertical pieces (|). Each of these shows up in a pattern, so we can rely on for loops to help with the rendering.</p>
+<p>To print a single row, we want to do something like this:</p>
+<p>print(" --- " * board_size)<br/>To print the vertical parts of the row, we want something like this, because we don’t care about trailing whitespace, and because we want one more vertical line than the size of the board:</p>
+<p>print("| " * (board_size + 1))<br/>For a board of size board_size we want to print that many horizontal pieces and vertical pieces, plus an extra horizontal piece for the bottom. Let’s use functions for this entire operation, since we might want to change the style on the game boards for later use. All together, the program will look like this:</p>
+<p>def print_horiz_line():<br/> print(" --- " * board_size)</p>
+<p>def print_vert_line():<br/> print("| " * (board_size + 1))</p>
+<p>if __name__ == "__main__":<br/> board_size = int(input("What size of game board? "))</p>
+<p>for index in range(board_size):<br/> print_horiz_line()<br/> print_vert_line()<br/> print horiz_line()<br/>This way, if we ever decide to change the design of the game board by making it bigger, it will be easy to do! All we need to do is change the print_horiz_line() and print_vert_line() functions, and we’re all set!</p><h3>25.Guessing Game Two Solutions</h3>
 <p></p>
 <p></p>
 <p></p>
