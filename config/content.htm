@@ -750,9 +750,283 @@
 </div>
 <p></p>
 <p>from random import shuffle<br/>list = [40523138, 40523148, 40723217, 40728238, 40823148, 40823152, 40923201, 40923202, 40923203, 40923204, 40923205, 40923206, 40923207, 40923208, 40923209, 40923210, 40923211, 40923212, 40923213, 40923214, 40923216, 40923217, 40923218, 40923219, 40923220, 40923221, 40923223, 40923224, 40923225, 40923226, 40923227, 40923228, 40923229, 40923230, 40923231, 40923232, 40923233, 40923234, 40923235, 40923236, 40923237, 40923238, 40923239, 40923240, 40923241, 40923242, 40923243, 40923244, 40923245, 40923246, 40923247, 40923248, 40923249, 40923250, 40923251, 40923252, 40923253]<br/>shuffle(list)<br/>n = 5<br/>m = int(len(list)/n)<br/>list2 = []<br/>for i in range(0, len(list),m):<br/> list2.append(list[i:i+m])<br/>print(list2)</p>
-<h1>HomeWork 3</h1>
+<p></p>
+<h2>作業一-2</h2>
+<div class="line number1 index0 alt2">
+<pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false">InputElement studListUrl = querySelector("#studListUrl");
+  String studUrl;
+  InputElement courseName = querySelector("#courseName");
+  String cName;
+  // 將 Label 改為 Textarea, 避免產生過程結果嵌入所在頁面
+  TextAreaElement output = querySelector("#output");
+   
+main() {
+  querySelector("#submit").onClick.listen((e) =&gt; grouping());
+}
+   
+grouping() {
+  output.innerHtml = "";
+   
+  if (studListUrl.value != "") {
+    studUrl = studListUrl.value;
+  } else {
+    studUrl = 'https://nfulist.herokuapp.com';
+  }
+   
+  if (courseName.value != "") {
+    cName = courseName.value;
+  } else {
+    cName = "cp2020";
+  }
+   
+  // 組序由 1 開始
+  int gth = 1;
+  // 迴圈序號變數
+  int i;
+  int j;
+  int total;
+  int inc;
+  // 每組學員暫存數列
+  var gpList = [];
+  // 全班分組數列
+  var group = [];
+  // 各組人數數列
+  var numList = [];
+   
+  HttpRequest.getString(studUrl).then((String resp) {
+    // 利用 trim() 去除字串最後的跳行符號, 之後再利用 split() 根據 \n 轉為數列
+    var studList = resp.trim().split("\n");
+    // 數列利用 shuffle() 方法以隨機方法弄亂順序
+    studList.shuffle();
+    total = studList.length;
+    output.text += "全班總計" + total.toString() + " 人\n";
+    numList = getNumList(studList.length);
+    inc = 0;
+    for (i in numList){
+      // 列印區隔符號
+      output.text += '=' * 20 + "\n";
+      output.text += "group $gth 有 " + i.toString() + " 人: \n";
+      gpList = [];
+      for (j = 0; j &lt; i; j++){
+        output.text += studList[j+inc] + "\n";
+        // 在各分組數列中加入將對應的學員學號
+        gpList.add(studList[j+inc]);
+      }
+      gth = gth + 1;
+      inc = inc + j;
+        //output.text += studList[j] + "\n";
+        // 逐步將各組暫存的分組數列加入全班分組數列中
+      gpList.sort();
+      group.add(gpList);
+    }
+    // 列出全班分組數列
+    output.text += group.toString() + "\n";
+    // 列出已經排序後的分組名單
+    output.text += '=' * 25 + "\n";
+    output.text += '以下為排序後的各組成員名單: \n';
+    gth = 1;
+    /*
+    404231
+    s4052
+    4062
+    s4072
+    4082
+    5072
+    5083
+    */
+    // 先列出純文字以 \n 跳行組員資料
+    for (i=0; i &lt; group.length; i++){
+      // 列印區隔符號
+      output.text += '=' * 20 + "\n";
+      output.text += "group $gth \n";
+      gpList = [];
+      for (j=0; j &lt; group[i].length; j++){
+        output.text += group[i][j] + "\n";
+      }
+      gth = gth + 1;
+    }
+      
+    gth = 1;
+    // 最後列出超文件以 &lt;br\&gt; 跳行組員資料, 包含倉儲與網站
+    for (i=0; i &lt; group.length; i++){
+      // 列印區隔符號
+      output.text += '\n' + '=' * 30 + "&lt;br \&gt;";
+      output.text += "group $gth &lt;br \&gt;";
+      gpList = [];
+      for (j=0; j &lt; group[i].length; j++){
+          if (group[i][j].startsWith('4052') || group[i][j].startsWith('4072')) {
+              output.text += "Repository: &lt;a href='https://github.com/s" +
+                                      group[i][j] + "/" + cName + "'&gt;" + group[i][j] + 
+                                      "&lt;/a&gt;" + " | Site: &lt;a href='https://s" + group[i][j] +
+                                      ".github.io/" + cName + "'&gt;" + group[i][j] +
+                                      "&lt;/a&gt;&lt;br \&gt;";
+          }
+          else {
+              output.text += "Repository: &lt;a href='https://github.com/" +
+                                      group[i][j] + "/" + cName +"'&gt;" + group[i][j] +
+                                      "&lt;/a&gt;" + " | Site: &lt;a href='https://" + group[i][j] +
+                                      ".github.io/" + cName + "'&gt;" + group[i][j] +
+                                      "&lt;/a&gt;&lt;br \&gt;";
+          }
+      }
+      gth = gth + 1;
+    }
+  });
+}
+   
+List getNumList(int total){
+  // total student number
+  // int total = 65;
+  // initial each group expect to be "eachGrp" number of people
+  int eachGrp = 10;
+  // may divide into "grpNum" number of group
+  int grpNum = total ~/ eachGrp;
+  // vacant list
+  var splits = [];
+  // find remainder when total number divid into "grpNum" number of group
+  int remainder = total % grpNum;
+  // number of people in one group by calculation
+  int calGrp = total ~/ grpNum;
+   
+  for (int i = 0; i &lt; grpNum; i++) {
+    splits.add(calGrp);
+  }
+  //print(splits);
+   
+  for (int i = 0; i &lt; remainder; i++) {
+    splits[i] += 1;
+  }
+  //print(splits);
+  return splits;
+ }&lt;/pre&gt;
+&lt;p&gt;index.html&lt;/p&gt;
+&lt;pre class="brush:html;auto-links:false;toolbar:false" contenteditable="false"&gt;&lt;h4&gt;亂數分組:&lt;/h4&gt;
+學員名單 URL: &lt;input type="text" id="studListUrl" size="60" value="https://nfulist.herokuapp.com"&gt;&lt;br /&gt;
+課程代號: &lt;input type="text" id="courseName" size="15" value="cp2020"&gt;&lt;br /&gt;
+&lt;input type="submit" value="開始分組" id="submit"&gt;&lt;br /&gt;
+&lt;textarea id="output" cols="80" rows="10"&gt;&lt;/textarea&gt;&lt;/pre&gt;
+&lt;p&gt;style.css&lt;/p&gt;
+&lt;pre class="brush:css;auto-links:false;toolbar:false" contenteditable="false"&gt;body {
+  color: white;
+  font-size: 20px;
+}
+  
+input, select, textarea {
+font-size: 100%;
+}&lt;/pre&gt;
+&lt;p&gt;even_grouping.py&lt;/p&gt;
+&lt;pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false"&gt;import random
+import requests
+   
+# getNumList 主要在每組最低人數下, 將不足 10 人的分組
+# 平均分配至各組
+def getNumList(total, eachGrp=10):
+    # total is the number of students
+    # each group at least 10 students
+    #eachGrp = 10;
+    # may divide into "grpNum" number of group
+    grpNum = total // eachGrp;
+    # check grpNum
+    #print(grpNum)
+    # vacan list
+    splits = []
+    # find remainder when total number divid into "grpNum" number of group
+    remainder = total % grpNum
+    # number of people in one group by calculation
+    calGrp = total // grpNum
+       
+    for i in range(grpNum):
+        splits.append(calGrp)
+           
+    # check first splits
+    #print(splits)
+     
+    for i in range(remainder):
+        splits[i] += 1
+       
+    # check final splits
+    #print(splits);
+    return splits;
+   
+# 儲存學生名單資料的 url
+target_url = "http://mde.tw/cp2020/downloads/get_student_list/2020spring_cd_2a_list.txt"
+# 利用 requests 讀取 url 中的資料
+f = requests.get(target_url)
+# get student list from target_url
+# 利用 splitlines() 將資料放入數列 studList
+studList = f.text.splitlines()
+# 每組預計分組的最低人數
+num_in_one_group = 10
+# 每組學員暫存數列
+gpList = []
+# 全班分組數列
+group = []
+# 各組人數數列
+numList = []
+# get numList
+numList = getNumList(len(studList), num_in_one_group)
+# check numList
+# 列出已經補齊的各組人數數列
+print("預計各組人數數列:" + str(numList))
+   
+output = ""
+gth = 1
+inc = 0
+   
+# 弄亂 studList
+random.shuffle(studList)
+output += "以下為尚未排序前的各組學員學號: \n"
+for i in numList:
+    # 列印區隔符號
+    output += '=' * 20 + "\n";
+    output += "group " + str(gth) + " 有 " + str(i) + " 人: \n"
+    # 每組學員暫存數列, 在此 reset
+    gpList = []
+    for j in range(i):
+        output += studList[j+inc] + "\n"
+        # 在各分組數列中加入將對應的學員學號
+        gpList.append(studList[j+inc])
+         
+    gth = gth + 1
+    inc = inc + j
+    # 將各組學員數列依照學號排序
+    gpList.sort()
+    group.append(gpList)
+   
+# 列出尚未排序前的分組結果
+print(output)
+# 列出已經完成排序的分組數列
+print("已經排序後的分組數列:" + str(group))
+   
+output = ""
+# 列出已經排序後的分組名單
+output += '=' * 25 + "\n"
+output += '以下為排序後的各組成員名單:\n'
+gth = 1
+   
+# 先列出純文字以 \n 跳行組員資料
+for i in range(len(group)):
+    # 列印區隔符號
+    output += '=' * 20 + "\n"
+    output += "group" + str(gth) + "\n"
+    gpList = []
+       
+    for j in range(len(group[i])):
+        output += str(group[i][j]) + "\n"
+         
+    gth = gth + 1
+       
+print(output)&lt;/pre&gt;
+&lt;h4&gt;使用 Brython&lt;/h4&gt;
+&lt;p&gt;&lt;a href="http://mde.tw/lab/content/Python.html"&gt;http://mde.tw/lab/content/Python.html&lt;/a&gt;&lt;/p&gt;
+&lt;pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false"&gt;# 利用 Brython 內建的 open 開啟 url 後, 以 read() 將資料取出
+output = open('http://mde.tw/cp2020/downloads/get_student_list/2020spring_cd_2a_list.txt').read()
+</pre>
+</div><h1>HomeWork 3</h1>
 <p><span>23、24、25</span></p><h2>Exercise</h2>
-<p><span>23.File Overlap</span></p>
+<p>23.File Overlap</p>
+<p>24.Draw A Game Board</p>
+<p>25.Guessing Game Two</p><h3>23.File Overlap</h3>
 <p>Exercise 23</p>
 <p>Given two<span> </span><code class="highlighter-rouge">.txt</code><span> </span>files that have lists of numbers in them, find the numbers that are overlapping.<span> </span><a href="http://www.practicepython.org/assets/primenumbers.txt">One<span> </span><code class="highlighter-rouge">.txt</code><span> </span>file</a><span> </span>has a list of all prime numbers under 1000, and<span> </span><a href="http://www.practicepython.org/assets/happynumbers.txt">the other<span> </span><code class="highlighter-rouge">.txt</code><span> </span>file</a><span> </span>has a list of happy numbers up to 1000.</p>
 <p>練習23<br/>給定兩個帶有數字列表的.txt文件，請查找重疊的數字。 一個.txt文件包含一個所有1000以下的質數的列表，另一個.txt文件包含一個最大為1000的幸福數字的列表。</p>
@@ -761,7 +1035,8 @@
 <p></p>
 <p></p>
 <p></p>
-<p>24.Draw A Game Board</p>
+<p></p>
+<h3>24.Draw A Game Board</h3>
 <p>Exercise 24<br/>This exercise is Part 1 of 4 of the Tic Tac Toe exercise series. The other exercises are: Part 2, Part 3, and Part 4.</p>
 <p>練習24<br/>此練習是Tic Tac Toe練習系列4的第1部分。 其他練習是：第2部分，第3部分和第4部分。</p>
 <p>Time for some fake graphics! Let’s say we want to draw game boards that look like this:</p>
@@ -777,16 +1052,118 @@
 <p><span></span></p>
 <p><span></span></p>
 <p><span></span></p>
-<p><span>25.Guessing Game Two </span></p>
-<p>Exercise 25<br/>In a previous exercise, we’ve written a program that “knows” a number and asks a user to guess it.</p>
-<p>練習25（和解答）<br/>在上一個練習中，我們編寫了一個程序，該程序“知道”一個數字並要求用戶猜測它。</p>
+<p><span></span></p>
+<h3>25.Guessing Game Two</h3>
+<p>Exercise 25</p>
+<p>In<span> </span><a href="https://www.practicepython.org/exercise/2014/04/02/09-guessing-game-one.html">a previous exercise</a>, we’ve written a program that “knows” a number and asks a user to guess it.</p>
 <p>This time, we’re going to do exactly the opposite. You, the user, will have in your head a number between 0 and 100. The program will guess a number, and you, the user, will say whether it is too high, too low, or your number.</p>
 <p>At the end of this exchange, your program should print out how many guesses it took to get your number.</p>
-<p>這次，我們將做相反的事情。 您（用戶）的腦海中會有一個介於0到100之間的數字。程序將猜測一個數字，而您（用戶）將說出它是太高，太低還是您的數字。</p>
-<p>交換結束後，您的程序應打印出獲得號碼所需的猜測次數。</p>
 <p>As the writer of this program, you will have to choose how your program will strategically guess. A naive strategy can be to simply start the guessing at 1, and keep going (2, 3, 4, etc.) until you hit the number. But that’s not an optimal guessing strategy. An alternate strategy might be to guess 50 (right in the middle of the range), and then increase / decrease by 1 as needed. After you’ve written the program, try to find the optimal strategy! (We’ll talk about what is the optimal one next week with the solution.)</p>
-<p>作為該程序的作者，您將不得不選擇您的程序將如何進行戰略性猜測。 幼稚的策略可以是簡單地從1開始猜測，然後繼續進行（2、3、4等），直到您得出數字。 但這不是最佳的猜測策略。 另一種策略是猜測50（在範圍的中間），然後根據需要增加/減少1。 編寫完程序後，嘗試找到最佳策略！ （我們將在下週討論該解決方案的最佳選擇。）</p><h2>Solutions</h2>
-<p><span>23.File Overlap Solutions</span></p>
+<p><span>在上</span><a href="https://www.practicepython.org/exercise/2014/04/02/09-guessing-game-one.html"><span>一個練習中</span></a><span>，我們編寫了一個程序，該程序“知道”一個數字並要求用戶猜測它。</span></p>
+<p><span><span>這次，我們將做相反的事情。</span><span>您（用戶）的腦海中會有一個介於0到100之間的數字。程序將猜測一個數字，而您（用戶）將說出它是太高，太低還是您的數字。</span></span></p>
+<p><span><span>交換結束後，您的程序應打印出獲得號碼所需的猜測次數。</span></span></p>
+<p><span><span>作為該程序的作者，您將不得不選擇您的程序將如何進行戰略性猜測。</span><span>幼稚的策略可以是簡單地從1開始猜測，並繼續進行（2、3、4等），直到您得出數字為止。</span><span>但這不是最佳的猜測策略。</span><span>另一種策略是猜測50（在範圍的中間），然後根據需要增加/減少1。</span><span>編寫完程序後，嘗試找到最佳策略！</span><span>（我們將在下週討論該解決方案的最佳選擇。）</span></span></p>
+<p><span><span></span></span></p>
+<p><span><span>Topics and links for more information</span></span></p>
+<p>(<span>更多資訊於連結和主題)</span></p>
+<p>This exercise doesn’t need any functions, but it does need extensive use of variables, math, and user input.</p>
+<p>You can refer to<span> </span><a href="https://www.practicepython.org/exercise/2014/01/29/01-character-input.html">this exercise on user input</a>,<span> </span><a href="https://www.practicepython.org/exercise/2014/03/26/08-rock-paper-scissors.html">this one on rock paper scissors</a>, and many others.</p>
+<p>If you want to implement the optimal solution without thinking about it first, you can read this<span> </span><a href="https://en.wikipedia.org/wiki/Binary_search_algorithm">Wikipedia article on binary search</a>.</p>
+<p><span>該練習不需要任何功能，但確實需要大量使用變量，數學和用戶輸入。</span></p>
+<p><span><span>您可以</span></span><a href="https://www.practicepython.org/exercise/2014/01/29/01-character-input.html"><span><span>在用戶輸入上</span></span></a><span><span>參考</span><a href="https://www.practicepython.org/exercise/2014/01/29/01-character-input.html"><span>此練習</span></a><span>，</span></span><a href="https://www.practicepython.org/exercise/2014/03/26/08-rock-paper-scissors.html"><span><span>在石頭剪刀</span></span></a><span><a href="https://www.practicepython.org/exercise/2014/01/29/01-character-input.html"><span>上</span></a><span>參考</span><a href="https://www.practicepython.org/exercise/2014/01/29/01-character-input.html"><span>此練習</span></a><span>，以及其他許多參考。</span></span></p>
+<p><span><span>如果您想在不首先考慮的情況下實施最佳解決方案，則可以閱讀</span></span><a href="https://en.wikipedia.org/wiki/Binary_search_algorithm"><span><span>有關二進制搜索的Wikipedia文章</span></span></a><span><span>。</span></span></p>
+<p><span><span></span></span></p>
+<p>Happy coding!</p>
+<p>編碼愉快!</p><h2>Solutions</h2>
+<p>23.File Overlap</p>
+<p>24.Draw A Game Board</p>
+<p>25.Guessing Game Two</p><h3>23.File Overlap Solutions</h3>
+<p>Sample solution<br/>For a simple look at the solution (without using functions and using a for loop), look no further. Read on for a solution using functions and list comprehensions, along with a detailed explanation in Python 3.</p>
+<p>樣題解答<br/>為了簡單地看一下解決方案（不使用函數，也不使用for循環），別無所求。繼續閱讀以獲取使用函數和列表推導的解決方案以及Python 3中的詳細說明。</p>
+<p>The solution without functions using a for loop (read on for the one with functions and the explanation)</p>
+<p>沒有功能的解決方案使用for循環（繼續閱讀帶有功能和說明的解決方案）</p>
+<pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false">primeslist = []
+with open('primenumbers.txt') as primesfile:
+	line = primesfile.readline()
+	while line:
+		primeslist.append(int(line))
+		line = primesfile.readline()
+
+happieslist = []
+with open('happynumbers.txt') as happiesfile:
+	line = happiesfile.readline()
+	while line:
+		happieslist.append(int(line))
+		line = happiesfile.readline()
+
+overlaplist = []
+for elem in primeslist:
+	if elem in happieslist:
+		overlaplist.append(elem)
+		
+print(overlaplist)</pre>
+<pre><br/>The solution with functions using list comprehensions (read on for the explanation):<br/>具有使用列表推導功能的解決方案（請繼續閱讀以獲取解釋）</pre>
+<pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false">def filetolistofints(filename):
+	list_to_return = []
+	with open(filename) as f:
+		line = f.readline()
+		while line:
+			list_to_return.append(int(line))
+			line = f.readline()
+	return list_to_return
+
+primeslist = filetolistofints('primenumbers.txt')
+happieslist = filetolistofints('happynumbers.txt')
+
+overlaplist = [elem for elem in primeslist if elem in happieslist]
+print(overlaplist)</pre>
+<pre><br/><br/></pre>
+<pre><br/>The explanation<br/>The interesting thing about this problem is that it is an extension of a previous exercise asking to find the overlap of two lists. <br/>Instead of lists that are hard-coded into the file, the program will now read lists of information from files somewhere on the computer and perform the same overlap operation.<br/>說明<br/>關於此問題的有趣之處在於，它是先前練習的擴展，要求查找兩個列表的重疊部分。該程序現在將從計算機上某處的文件中讀取信息列表，並執行相同的重疊操作，而不是將這些列表硬編碼到文件中。</pre>
+<p>The first thing to do is open the .txt files and save them somewhere on your computer (easiest is in the same folder as the Python file you are working in). You notice that when you look at the file, each line of the file is an integer. Next, in Python we want to open one of the files and save the contents (as integers) into a list.</p>
+<p>要做的第一件事是打開.txt文件，並將其保存在計算機上的某個位置（最簡單的方法是與您正在使用的Python文件位於同一文件夾中）。您會注意到，當您查看文件時，文件的每一行都是一個整數。接下來，在Python中，我們要打開其中一個文件，然後將內容（作為整數）保存到列表中。</p>
+<p>This code snippet, as taken from the Exercise 23 explanation about reading from files, will open the file and print out all the lines.</p>
+<p>該代碼段摘自練習23中有關讀取文件的說明，它將打開文件並打印出所有行。</p>
+<p>with open('primenumbers.txt') as f:<br/> line = f.readline()<br/> while line:<br/> print(line)<br/> line = f.readline()<br/>We now want to just save each line as a separate integer into the list.</p>
+<p>現在，我們只想將每一行作為單獨的整數保存到列表中。</p>
+<p>primeslist = []<br/> with open('primenumbers.txt') as f:<br/> line = f.readline()<br/> while line:<br/> primeslist.append(int(line))<br/> line = f.readline()</p>
+<p><br/>All we did was change the print into an append to the list, and make an empty list at the beginning. Note that before I append the line to my list, I turn it into an int with the int() statement.</p>
+<p>我們要做的就是將打印內容更改為列表的追加，並在開頭添加一個空白列表。請注意，在將行添加到列表之前，請使用int（）語句將其轉換為int。</p>
+<p>Now we have a choice. We can either do this twice (copy and paste the exact same code), or write a function to do this for us whenever we want.</p>
+<p>現在我們有一個選擇。我們可以執行兩次（複製並粘貼完全相同的代碼），也可以編寫函數隨時為我們執行此操作。</p>
+<p>Let’s make this into a function, for explanation’s sake. What we want to do here is make a function that I give the name of the file to, and it gives back to me a list of all the numbers in that file, assuming each line contains a separate integer. We need to add two lines to our code snippet from above, the function header and the return statement. The function header is just the name of the function with the list of variables to return, and the return statement is the line return list_of_ints at the end of the function.</p>
+<p>為了說明起見，讓我們將其作為一個函數。我們要在這裡做的是創建一個函數，該函數將文件名提供給我，並且假定每行包含一個單獨的整數，它會向我返回該文件中所有數字的列表。我們需要在代碼段上方添加兩行，即函數標頭和return語句。函數頭只是函數的名稱，其中包含要返回的變量列表，而return語句是函數末尾的return list_of_ints行。</p>
+<p>def filetolistofints(filename):<br/> list_of_ints = []<br/> with open(filename) as f:<br/> line = f.readline()<br/> while line:<br/> list_of_ints.append(int(line))<br/> line = f.readline()<br/> return list_of_ints<br/>Now I can use this function to read both of my files in two simple lines:</p>
+<p>現在，我可以使用此功能以兩行代碼讀取兩個文件：</p>
+<p>primeslist = filetolistofints('primenumbers.txt')<br/> happieslist = filetolistofints('happynumbers.txt')</p>
+<p><br/>What I have now in my variables primeslist and happieslist are lists where each element was a number on a separate line in each of the files.</p>
+<p>我現在在變量primeslist和happieslist中擁有的列表是其中每個元素在每個文件中的單獨一行上都是數字的列表。</p>
+<p>My last step is to find the overlap between them. I can either use two for loops or a list comprehension. (If you need a refresher, Exercise 3 talks about for loops and Exercise 7 talks about list comprehensions.)</p>
+<p>我的最後一步是找到它們之間的重疊。我可以使用兩個for循環或列表理解。 （如果需要復習，練習3討論for循環，練習7討論列表推導。）</p>
+<p>As a list comprehension, you construct a new list that takes each element from primeslist and only adds it to our new list if it is inside happieslist.</p>
+<p>作為列表理解，您構造了一個新列表，該列表從primeslist中獲取每個元素，並且僅將其添加到我們的新列表中（如果它位於happieslist中）。</p>
+<p>overlaplist = [elem for elem in primeslist if elem in happieslist]<br/>This can also be done with a for loop, as below:</p>
+<p>overlaplist = []<br/> for elem in primeslist:<br/> if elem in happieslist:<br/> overlaplist.append(elem)<br/>And when the loop is done, overlaplist will contain all the elements of the overlap.</p>
+<p>並且當循環完成時，重疊列表將包含重疊的所有元素。</p>
+<p>Now we can just print our result (using Python 3 syntax) and be done.</p>
+<p>現在，我們可以打印結果（使用Python 3語法）並完成。</p>
+<p>print(overlaplist)</p>
+<p>For a full and concise solution once again, here it is:</p>
+<pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false">def filetolistofints(filename):
+	list_to_return = []
+	with open(filename) as f:
+		line = f.readline()
+		while line:
+			list_to_return.append(int(line))
+			line = f.readline()
+	return list_to_return
+
+primeslist = filetolistofints('primenumbers.txt')
+happieslist = filetolistofints('happynumbers.txt')
+
+overlaplist = [elem for elem in primeslist if elem in happieslist]
+print(overlaplist)</pre>
+<pre><br/><br/></pre>
+<h3>24.Draw A Game Board Solutions</h3><h3>25.Guessing Game Two Solutions</h3>
 <p></p>
 <p></p>
 <p></p>

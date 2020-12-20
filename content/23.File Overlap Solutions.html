@@ -133,10 +133,93 @@ img.add_border {
           </div>
           
         </header>
-    <div id="tipue_search_content">週進度 << <a href='週進度.html'>Previous</a> <a href='組員名單bg4.html'>Next</a> >> 組員名單bg4<br /><h1>0</h1>
-<p><strong></strong></p>
-<p id="N10654" lang=""></p>
-<br />週進度 << <a href='週進度.html'>Previous</a> <a href='組員名單bg4.html'>Next</a> >> 組員名單bg4</div>
+    <div id="tipue_search_content">Solutions << <a href='Solutions.html'>Previous</a> <a href='24.Draw A Game Board Solutions.html'>Next</a> >> 24.Draw A Game Board Solutions<br /><h1>23.File Overlap Solutions</h1>
+<p>Sample solution<br/>For a simple look at the solution (without using functions and using a for loop), look no further. Read on for a solution using functions and list comprehensions, along with a detailed explanation in Python 3.</p>
+<p>樣題解答<br/>為了簡單地看一下解決方案（不使用函數，也不使用for循環），別無所求。繼續閱讀以獲取使用函數和列表推導的解決方案以及Python 3中的詳細說明。</p>
+<p>The solution without functions using a for loop (read on for the one with functions and the explanation)</p>
+<p>沒有功能的解決方案使用for循環（繼續閱讀帶有功能和說明的解決方案）</p>
+<pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false">primeslist = []
+with open('primenumbers.txt') as primesfile:
+	line = primesfile.readline()
+	while line:
+		primeslist.append(int(line))
+		line = primesfile.readline()
+
+happieslist = []
+with open('happynumbers.txt') as happiesfile:
+	line = happiesfile.readline()
+	while line:
+		happieslist.append(int(line))
+		line = happiesfile.readline()
+
+overlaplist = []
+for elem in primeslist:
+	if elem in happieslist:
+		overlaplist.append(elem)
+		
+print(overlaplist)</pre>
+<pre><br/>The solution with functions using list comprehensions (read on for the explanation):<br/>具有使用列表推導功能的解決方案（請繼續閱讀以獲取解釋）</pre>
+<pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false">def filetolistofints(filename):
+	list_to_return = []
+	with open(filename) as f:
+		line = f.readline()
+		while line:
+			list_to_return.append(int(line))
+			line = f.readline()
+	return list_to_return
+
+primeslist = filetolistofints('primenumbers.txt')
+happieslist = filetolistofints('happynumbers.txt')
+
+overlaplist = [elem for elem in primeslist if elem in happieslist]
+print(overlaplist)</pre>
+<pre><br/><br/></pre>
+<pre><br/>The explanation<br/>The interesting thing about this problem is that it is an extension of a previous exercise asking to find the overlap of two lists. <br/>Instead of lists that are hard-coded into the file, the program will now read lists of information from files somewhere on the computer and perform the same overlap operation.<br/>說明<br/>關於此問題的有趣之處在於，它是先前練習的擴展，要求查找兩個列表的重疊部分。該程序現在將從計算機上某處的文件中讀取信息列表，並執行相同的重疊操作，而不是將這些列表硬編碼到文件中。</pre>
+<p>The first thing to do is open the .txt files and save them somewhere on your computer (easiest is in the same folder as the Python file you are working in). You notice that when you look at the file, each line of the file is an integer. Next, in Python we want to open one of the files and save the contents (as integers) into a list.</p>
+<p>要做的第一件事是打開.txt文件，並將其保存在計算機上的某個位置（最簡單的方法是與您正在使用的Python文件位於同一文件夾中）。您會注意到，當您查看文件時，文件的每一行都是一個整數。接下來，在Python中，我們要打開其中一個文件，然後將內容（作為整數）保存到列表中。</p>
+<p>This code snippet, as taken from the Exercise 23 explanation about reading from files, will open the file and print out all the lines.</p>
+<p>該代碼段摘自練習23中有關讀取文件的說明，它將打開文件並打印出所有行。</p>
+<p>with open('primenumbers.txt') as f:<br/> line = f.readline()<br/> while line:<br/> print(line)<br/> line = f.readline()<br/>We now want to just save each line as a separate integer into the list.</p>
+<p>現在，我們只想將每一行作為單獨的整數保存到列表中。</p>
+<p>primeslist = []<br/> with open('primenumbers.txt') as f:<br/> line = f.readline()<br/> while line:<br/> primeslist.append(int(line))<br/> line = f.readline()</p>
+<p><br/>All we did was change the print into an append to the list, and make an empty list at the beginning. Note that before I append the line to my list, I turn it into an int with the int() statement.</p>
+<p>我們要做的就是將打印內容更改為列表的追加，並在開頭添加一個空白列表。請注意，在將行添加到列表之前，請使用int（）語句將其轉換為int。</p>
+<p>Now we have a choice. We can either do this twice (copy and paste the exact same code), or write a function to do this for us whenever we want.</p>
+<p>現在我們有一個選擇。我們可以執行兩次（複製並粘貼完全相同的代碼），也可以編寫函數隨時為我們執行此操作。</p>
+<p>Let’s make this into a function, for explanation’s sake. What we want to do here is make a function that I give the name of the file to, and it gives back to me a list of all the numbers in that file, assuming each line contains a separate integer. We need to add two lines to our code snippet from above, the function header and the return statement. The function header is just the name of the function with the list of variables to return, and the return statement is the line return list_of_ints at the end of the function.</p>
+<p>為了說明起見，讓我們將其作為一個函數。我們要在這裡做的是創建一個函數，該函數將文件名提供給我，並且假定每行包含一個單獨的整數，它會向我返回該文件中所有數字的列表。我們需要在代碼段上方添加兩行，即函數標頭和return語句。函數頭只是函數的名稱，其中包含要返回的變量列表，而return語句是函數末尾的return list_of_ints行。</p>
+<p>def filetolistofints(filename):<br/> list_of_ints = []<br/> with open(filename) as f:<br/> line = f.readline()<br/> while line:<br/> list_of_ints.append(int(line))<br/> line = f.readline()<br/> return list_of_ints<br/>Now I can use this function to read both of my files in two simple lines:</p>
+<p>現在，我可以使用此功能以兩行代碼讀取兩個文件：</p>
+<p>primeslist = filetolistofints('primenumbers.txt')<br/> happieslist = filetolistofints('happynumbers.txt')</p>
+<p><br/>What I have now in my variables primeslist and happieslist are lists where each element was a number on a separate line in each of the files.</p>
+<p>我現在在變量primeslist和happieslist中擁有的列表是其中每個元素在每個文件中的單獨一行上都是數字的列表。</p>
+<p>My last step is to find the overlap between them. I can either use two for loops or a list comprehension. (If you need a refresher, Exercise 3 talks about for loops and Exercise 7 talks about list comprehensions.)</p>
+<p>我的最後一步是找到它們之間的重疊。我可以使用兩個for循環或列表理解。 （如果需要復習，練習3討論for循環，練習7討論列表推導。）</p>
+<p>As a list comprehension, you construct a new list that takes each element from primeslist and only adds it to our new list if it is inside happieslist.</p>
+<p>作為列表理解，您構造了一個新列表，該列表從primeslist中獲取每個元素，並且僅將其添加到我們的新列表中（如果它位於happieslist中）。</p>
+<p>overlaplist = [elem for elem in primeslist if elem in happieslist]<br/>This can also be done with a for loop, as below:</p>
+<p>overlaplist = []<br/> for elem in primeslist:<br/> if elem in happieslist:<br/> overlaplist.append(elem)<br/>And when the loop is done, overlaplist will contain all the elements of the overlap.</p>
+<p>並且當循環完成時，重疊列表將包含重疊的所有元素。</p>
+<p>Now we can just print our result (using Python 3 syntax) and be done.</p>
+<p>現在，我們可以打印結果（使用Python 3語法）並完成。</p>
+<p>print(overlaplist)</p>
+<p>For a full and concise solution once again, here it is:</p>
+<pre class="brush:py;auto-links:false;toolbar:false" contenteditable="false">def filetolistofints(filename):
+	list_to_return = []
+	with open(filename) as f:
+		line = f.readline()
+		while line:
+			list_to_return.append(int(line))
+			line = f.readline()
+	return list_to_return
+
+primeslist = filetolistofints('primenumbers.txt')
+happieslist = filetolistofints('happynumbers.txt')
+
+overlaplist = [elem for elem in primeslist if elem in happieslist]
+print(overlaplist)</pre>
+<pre><br/><br/></pre>
+<br />Solutions << <a href='Solutions.html'>Previous</a> <a href='24.Draw A Game Board Solutions.html'>Next</a> >> 24.Draw A Game Board Solutions</div>
         
     <!-- footer -->
       <div class="container">
